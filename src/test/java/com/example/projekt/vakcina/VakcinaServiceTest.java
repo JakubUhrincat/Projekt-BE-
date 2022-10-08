@@ -5,11 +5,14 @@ import com.example.projekt.Vakcina.VakcinaEntity;
 import com.example.projekt.Vakcina.VakcinaRepository;
 import com.example.projekt.Vakcina.VakcinaService;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-
+@ExtendWith(MockitoExtension.class)
 public class VakcinaServiceTest {
 
     @InjectMocks
@@ -18,28 +21,19 @@ public class VakcinaServiceTest {
     @Mock
     private VakcinaRepository vakcinaRepository;
 
-    @Captor
-    private ArgumentCaptor<String> nazovBodyCaptor;
-
     @Test
-    public void vakcinaServiceSave() {
-        // --- setup
+    public void vakcinaServiceCreate() {
         int generatedId = 1;
 
         VakcinaEntity fakeEntity = new VakcinaEntity().setId(generatedId)
                 .setNazov("Johnson")
-                .setPocet_davok("1");
+                .setPocet_davok(1);
 
         when(vakcinaRepository.save(any(VakcinaEntity.class)))
                 .thenReturn(fakeEntity);
 
-        // --- execution
-        Vakcina vakcinaToGet = new Vakcina().setNazov("NovaVakcina")
-                                            .setPocet_davok("5");
+        Vakcina id = vakcinaService.getVakcinaById(1);
 
-        int id = vakcinaService.getVakcinaByNazov(vakcinaToGet);
-
-        // verification
         assertEquals(generatedId, id);
         verify(vakcinaRepository, times(1)).save(any());
 

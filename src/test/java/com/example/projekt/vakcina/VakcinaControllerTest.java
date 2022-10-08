@@ -29,19 +29,21 @@ public class VakcinaControllerTest {
     @MockBean
     private VakcinaService vakcinaService;
 
-    private static ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
+
     @Test
     @SneakyThrows
-    public void saveBook() {
-        when(vakcinaService.getVakcinaById(any())).thenReturn(1);
+    public void createVakcina() {
+        when(vakcinaService.createVakcina(any())).thenReturn(1);
 
-        Vakcina vakcina = new Vakcina().setNazov("Famous Author")
-                                        .setPocet_davok("5");
+        Vakcina vakcina = new Vakcina()
+                .setNazov("Johnson")
+                .setPocet_davok(5);
 
         String json = mapper.writeValueAsString(vakcina);
 
         mockMvc.perform(
-                        post("/api/books")
+                        post("/api/vakcina")
                                 .content(json)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
