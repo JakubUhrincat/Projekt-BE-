@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
@@ -43,5 +44,16 @@ public class OsobaServiceTest {
         assertEquals(generatedId, id);
         verify(osobaRepository, times(1)).save(any());
 
+    }
+
+    @Test
+    public void osobaServiceCreateFail() {
+
+        Osoba osobaToSave = new Osoba().setMeno("Marek");
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> osobaService.createOsoba(osobaToSave));
+        assertEquals("Author or Title are empty fields", exception.getMessage());
+
+        verify(osobaRepository, times(0)).save(any());
     }
 }
